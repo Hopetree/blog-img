@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:flowable="http://flowable.org/bpmn" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+  <bpmn2:process id="ITSC-PROCESS-ID" name="ITSC-PROCESS-NAME">
+    <bpmn2:documentation>描述</bpmn2:documentation>
+    <bpmn2:startEvent id="StartEvent_1" name="开始">
+      <bpmn2:outgoing>Flow_1gt4xn7</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:sequenceFlow id="Flow_1gt4xn7" sourceRef="StartEvent_1" targetRef="Activity_1bleawm" />
+    <bpmn2:userTask id="Activity_0a2b7mj" name="受理事件" flowable:isFormDecision="0" flowable:strategy="emptyAssign" flowable:handling="directly" flowable:dispatchStrategy="" flowable:assignee="" flowable:assigneeValue="" flowable:assigneeType="" flowable:assigneeList="" flowable:assigneeGroup="" flowable:subsequentConf="[]" flowable:setAssignee="false" flowable:formExpressionName="">
+      <bpmn2:incoming>Flow_0c71lum</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_0329bxb</bpmn2:outgoing>
+    </bpmn2:userTask>
+    <bpmn2:userTask id="Activity_1iirbcd" name="一线诊断处理" flowable:isFormDecision="1" flowable:strategy="emptyAssign" flowable:handling="directly" flowable:dispatchStrategy="" flowable:assignee="{{.lastExec}}" flowable:subsequentConf="[]" flowable:setAssignee="false" flowable:formExpressionName="isUp:Activity_1iirbcd.h2ogajnj4h.0.isUp.value" flowable:assigneeValue="" flowable:assigneeType="" flowable:assigneeList="" flowable:assigneeGroup="">
+      <bpmn2:incoming>Flow_0329bxb</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_1rmrxjn</bpmn2:outgoing>
+    </bpmn2:userTask>
+    <bpmn2:exclusiveGateway id="Gateway_0qz5phx">
+      <bpmn2:incoming>Flow_1rmrxjn</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_0kefytb</bpmn2:outgoing>
+      <bpmn2:outgoing>Flow_0lww0vv</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="Flow_1rmrxjn" name="是否升级" sourceRef="Activity_1iirbcd" targetRef="Gateway_0qz5phx" />
+    <bpmn2:sequenceFlow id="Flow_0kefytb" name="否" sourceRef="Gateway_0qz5phx" targetRef="Activity_1rhe60m">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${isUp == "n"}</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:userTask id="Activity_1rhe60m" name="提单人确认结果" flowable:isFormDecision="0" flowable:strategy="emptyAssign" flowable:handling="directly" flowable:dispatchStrategy="" flowable:assignee="{{.loginUser}}" flowable:subsequentConf="[]" flowable:setAssignee="false" flowable:formExpressionName="" flowable:assigneeValue="" flowable:assigneeType="" flowable:assigneeList="" flowable:assigneeGroup="">
+      <bpmn2:incoming>Flow_0kefytb</bpmn2:incoming>
+      <bpmn2:incoming>Flow_0zxy87u</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_0849p0y</bpmn2:outgoing>
+    </bpmn2:userTask>
+    <bpmn2:endEvent id="Event_1suxunw">
+      <bpmn2:incoming>Flow_0849p0y</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="Flow_0849p0y" name="" sourceRef="Activity_1rhe60m" targetRef="Event_1suxunw" />
+    <bpmn2:userTask id="Activity_1p7dihj" name="二线诊断处理" flowable:isFormDecision="1" flowable:strategy="emptyAssign" flowable:handling="directly" flowable:dispatchStrategy="" flowable:assignee="" flowable:assigneeValue="" flowable:assigneeType="" flowable:assigneeList="" flowable:assigneeGroup="" flowable:subsequentConf="[]" flowable:setAssignee="false" flowable:formExpressionName="isUp:Activity_1p7dihj.h2ogajnj4h.0.isUp.value">
+      <bpmn2:incoming>Flow_0lww0vv</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_0pimyqw</bpmn2:outgoing>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="Flow_0lww0vv" name="是" sourceRef="Gateway_0qz5phx" targetRef="Activity_1p7dihj">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${isUp == "y"}</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="Flow_0pimyqw" name="是否升级" sourceRef="Activity_1p7dihj" targetRef="Gateway_0pnurtp" />
+    <bpmn2:userTask id="Activity_0u5lm0s" name="三线处理" flowable:isFormDecision="0" flowable:strategy="emptyAssign" flowable:handling="directly" flowable:dispatchStrategy="" flowable:assignee="" flowable:assigneeValue="" flowable:assigneeType="" flowable:assigneeList="" flowable:assigneeGroup="" flowable:subsequentConf="[]" flowable:setAssignee="false" flowable:formExpressionName="">
+      <bpmn2:incoming>Flow_02he7xt</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_08apq9i</bpmn2:outgoing>
+    </bpmn2:userTask>
+    <bpmn2:exclusiveGateway id="Gateway_0pnurtp">
+      <bpmn2:incoming>Flow_0pimyqw</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_02he7xt</bpmn2:outgoing>
+      <bpmn2:outgoing>Flow_0cm84y2</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="Flow_02he7xt" name="是" sourceRef="Gateway_0pnurtp" targetRef="Activity_0u5lm0s">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${isUp == "y"}</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:userTask id="Activity_1bleawm" name="提交事件" flowable:isFormDecision="0" flowable:strategy="emptyAssign" flowable:handling="directly" flowable:dispatchStrategy="" flowable:assignee="{{.loginUser}}" flowable:subsequentConf="[]" flowable:setAssignee="false" flowable:formExpressionName="" flowable:assigneeValue="" flowable:assigneeType="" flowable:assigneeList="" flowable:assigneeGroup="">
+      <bpmn2:incoming>Flow_1gt4xn7</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_0c71lum</bpmn2:outgoing>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="Flow_0c71lum" sourceRef="Activity_1bleawm" targetRef="Activity_0a2b7mj" />
+    <bpmn2:sequenceFlow id="Flow_0329bxb" sourceRef="Activity_0a2b7mj" targetRef="Activity_1iirbcd" />
+    <bpmn2:userTask id="Activity_03e8adp" name="一线确认" flowable:isFormDecision="0" flowable:strategy="emptyAssign" flowable:handling="directly" flowable:dispatchStrategy="" flowable:assignee="{{.historyExec}}" flowable:assigneeValue="Activity_1iirbcd" flowable:subsequentConf="[]" flowable:setAssignee="false" flowable:formExpressionName="" flowable:assigneeType="" flowable:assigneeList="" flowable:assigneeGroup="">
+      <bpmn2:incoming>Flow_08apq9i</bpmn2:incoming>
+      <bpmn2:incoming>Flow_0cm84y2</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_0zxy87u</bpmn2:outgoing>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="Flow_08apq9i" sourceRef="Activity_0u5lm0s" targetRef="Activity_03e8adp" />
+    <bpmn2:sequenceFlow id="Flow_0cm84y2" name="否" sourceRef="Gateway_0pnurtp" targetRef="Activity_03e8adp">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${isUp == "n"}</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="Flow_0zxy87u" sourceRef="Activity_03e8adp" targetRef="Activity_1rhe60m" />
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="ITSC-PROCESS-ID">
+      <bpmndi:BPMNEdge id="Flow_0zxy87u_di" bpmnElement="Flow_0zxy87u">
+        <di:waypoint x="1250" y="-80" />
+        <di:waypoint x="1250" y="42" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0cm84y2_di" bpmnElement="Flow_0cm84y2">
+        <di:waypoint x="1095" y="-120" />
+        <di:waypoint x="1200" y="-120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1142" y="-138" width="11" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_08apq9i_di" bpmnElement="Flow_08apq9i">
+        <di:waypoint x="1120" y="-310" />
+        <di:waypoint x="1250" y="-310" />
+        <di:waypoint x="1250" y="-160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0329bxb_di" bpmnElement="Flow_0329bxb">
+        <di:waypoint x="610" y="82" />
+        <di:waypoint x="690" y="82" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0c71lum_di" bpmnElement="Flow_0c71lum">
+        <di:waypoint x="440" y="82" />
+        <di:waypoint x="510" y="82" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02he7xt_di" bpmnElement="Flow_02he7xt">
+        <di:waypoint x="1070" y="-145" />
+        <di:waypoint x="1070" y="-270" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1080" y="-210" width="11" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0pimyqw_di" bpmnElement="Flow_0pimyqw">
+        <di:waypoint x="960" y="-120" />
+        <di:waypoint x="1045" y="-120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="983" y="-138" width="44" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0lww0vv_di" bpmnElement="Flow_0lww0vv">
+        <di:waypoint x="910" y="57" />
+        <di:waypoint x="910" y="-80" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="920" y="-14" width="11" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0849p0y_di" bpmnElement="Flow_0849p0y">
+        <di:waypoint x="1300" y="82" />
+        <di:waypoint x="1372" y="82" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1693" y="64" width="55" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0kefytb_di" bpmnElement="Flow_0kefytb">
+        <di:waypoint x="935" y="82" />
+        <di:waypoint x="1200" y="82" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="992" y="64" width="11" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1rmrxjn_di" bpmnElement="Flow_1rmrxjn">
+        <di:waypoint x="790" y="82" />
+        <di:waypoint x="885" y="82" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="821" y="64" width="44" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gt4xn7_di" bpmnElement="Flow_1gt4xn7">
+        <di:waypoint x="268" y="82" />
+        <di:waypoint x="340" y="82" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="232" y="64" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="239" y="40" width="22" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_05znsk5_di" bpmnElement="Activity_0a2b7mj">
+        <dc:Bounds x="510" y="42" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1iirbcd_di" bpmnElement="Activity_1iirbcd">
+        <dc:Bounds x="690" y="42" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0qz5phx_di" bpmnElement="Gateway_0qz5phx" isMarkerVisible="true">
+        <dc:Bounds x="885" y="57" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1rhe60m_di" bpmnElement="Activity_1rhe60m">
+        <dc:Bounds x="1200" y="42" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1suxunw_di" bpmnElement="Event_1suxunw">
+        <dc:Bounds x="1372" y="64" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1p7dihj_di" bpmnElement="Activity_1p7dihj">
+        <dc:Bounds x="860" y="-160" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0u5lm0s_di" bpmnElement="Activity_0u5lm0s">
+        <dc:Bounds x="1020" y="-350" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0pnurtp_di" bpmnElement="Gateway_0pnurtp" isMarkerVisible="true">
+        <dc:Bounds x="1045" y="-145" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1bleawm_di" bpmnElement="Activity_1bleawm">
+        <dc:Bounds x="340" y="42" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_03e8adp_di" bpmnElement="Activity_03e8adp">
+        <dc:Bounds x="1200" y="-160" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>
